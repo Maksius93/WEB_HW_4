@@ -38,16 +38,6 @@ def save_message_to_json(data_dict):
 
         with open(file_path, "w") as file:
             json.dump(existing_data, file, indent=4)
-            # json.dump(existing_data, file, indent=4)
-            # json.dump(existing_data, file, indent=4)
-
-    # print("Message received and saved successfully!")
-    # with lock:
-    #     file_path = storage_path / "data.json"
-    #     with open(file_path, "a") as file:
-    #         json.dump(data, file)
-    #         file.write("\n")
-
 
 class HttpHandler(BaseHTTPRequestHandler):
     def do_GET(self):
