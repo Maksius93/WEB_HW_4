@@ -17,16 +17,36 @@ server_socket.bind(server_address)
 lock = RLock()
 
 def save_message_to_json(data_dict):
-    # Формируем ключ с текущим временем
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
     data = {current_time: data_dict}
 
-    # Блокируем доступ к файлу и сохраняем данные
+    file_path = storage_path / "data.json"
     with lock:
-        file_path = storage_path / "data.json"
-        with open(file_path, "a") as file:
-            json.dump(data, file)
-            file.write("\n")
+        if file_path.exists():
+            with open(file_path, "r") as file:
+                try:
+                    existing_data = json.load(file)
+                    # existing_data.append("\n")
+                    print(existing_data)
+                except json.JSONDecodeError:
+                    existing_data = []
+        else:
+            existing_data = []
+
+        existing_data.append(data)
+        print(existing_data)
+
+        with open(file_path, "w") as file:
+            json.dump(existing_data, file, indent=4)
+            # json.dump(existing_data, file, indent=4)
+            # json.dump(existing_data, file, indent=4)
+
+    # print("Message received and saved successfully!")
+    # with lock:
+    #     file_path = storage_path / "data.json"
+    #     with open(file_path, "a") as file:
+    #         json.dump(data, file)
+    #         file.write("\n")
 
 
 class HttpHandler(BaseHTTPRequestHandler):
