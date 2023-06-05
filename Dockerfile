@@ -6,17 +6,17 @@ FROM python:3.11
 ENV WEB_HW_4 /main
 
 # Установим рабочую директорию внутри контейнера
-WORKDIR $WEB_HW_4
-
-COPY pyproject.toml $WEB_HW_2/pyproject.toml
-COPY poetry.lock $WEB_HW_2/poetry.lock
+WORKDIR .
+COPY . .
+#COPY pyproject.toml $WEB_HW_2/pyproject.toml
+#COPY poetry.lock $WEB_HW_2/poetry.lock
 
 # Установим зависимости внутри контейнера
 RUN pip install poetry
 RUN poetry config virtualenvs.create false && poetry install --only main
 
 # Скопируем остальные файлы в рабочую директорию контейнера
-COPY . .
+
 
 
 # Запустим наше приложение внутри контейнера

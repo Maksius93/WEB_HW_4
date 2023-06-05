@@ -2,11 +2,13 @@ import mimetypes
 import json
 import urllib.parse
 import socket
+import logging
 from threading import RLock, Thread
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from datetime import datetime
 from pathlib import Path
 
+logging.basicConfig(filename='app.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 storage_path = Path("storage")
 storage_path.mkdir(parents=True, exist_ok=True)
 
@@ -38,6 +40,8 @@ def save_message_to_json(data_dict):
 
         with open(file_path, "w") as file:
             json.dump(existing_data, file, indent=4)
+
+    logging.info("Message saved successfully!")
 
 class HttpHandler(BaseHTTPRequestHandler):
     def do_GET(self):
